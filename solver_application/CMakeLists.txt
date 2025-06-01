@@ -1,19 +1,17 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.22) # Проверка версии CMake.
+									# Если версия установленой программы
+									# старее указаной, произайдёт аварийный выход.
 
-project(solver)
+project(solver)				# Название проекта
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(SOURCE_EXE equation.cpp)			# Установка переменной со списком исходников
 
-add_subdirectory(/../formatter_ex_lib formatter_ex_lib_dir)
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib/"
+					"${CMAKE_CURRENT_SOURCE_DIR}/../solver_lib/")
 
-add_library(solver_lib /../solver_lib/solver.cpp /../solver_lib/solver.h)
-add_executable(solver /equation.cpp)
+add_executable(main ${SOURCE_EXE})	# Создает исполняемый файл с именем main
 
-target_include_directories(formatter_ex_lib PUBLIC
-/../formatter_lib
-/../formatter_ex_lib
-/../solver_lib
-)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib/ formatter_ex_lib)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../solver_lib/ solver_lib)
 
-target_link_libraries(solver formatter_ex_lib formatter_lib solver_lib)
+target_link_libraries(main formatter_ex_lib solver_lib)		# Линковка программы с библиотекой
