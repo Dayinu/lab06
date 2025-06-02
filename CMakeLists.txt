@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(solver_project)
 
-# Version information
 set(SOLVER_VERSION_MAJOR 0)
 set(SOLVER_VERSION_MINOR 1)
 set(SOLVER_VERSION_PATCH 0)
@@ -18,5 +17,4 @@ add_subdirectory(solver_lib)
 add_subdirectory(solver_application)
 add_subdirectory(hello_world_application)
 
-# Include CPack
 include(CPackConfig.cmake)
