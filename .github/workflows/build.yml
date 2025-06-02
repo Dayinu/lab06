@@ -3,7 +3,7 @@ name: Build and Package
 on:
   push:
     tags:
-      - 'v*' # This triggers the workflow on tag pushes starting with 'v'
+      - 'v*' 
 
 jobs:
   build:
@@ -15,6 +15,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake rpm
+
+    - name: Create required files
+      run: |
+        echo "Equation solver package" > DESCRIPTION
+        echo "MIT License" > LICENSE
+        echo "* $(date +'%a %b %d %Y') CI <ci@example.com> - Build ${GITHUB_REF_NAME}" > ChangeLog.md
         
     - name: Configure and build
       run: |
