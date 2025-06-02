@@ -3,24 +3,18 @@ name: Build and Package
 on:
   push:
     tags:
-      - 'v*' 
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4  # ← Обновлено с v2 до v4
     
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake rpm
-
-    - name: Create required files
-      run: |
-        echo "Equation solver package" > DESCRIPTION
-        echo "MIT License" > LICENSE
-        echo "* $(date +'%a %b %d %Y') CI <ci@example.com> - Build ${GITHUB_REF_NAME}" > ChangeLog.md
         
     - name: Configure and build
       run: |
@@ -28,7 +22,7 @@ jobs:
         cmake --build _build --target package
         
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4  # ← Обновлено с v2 до v4
       with:
         name: packages
         path: _build/*.tar.gz _build/*.deb _build/*.rpm
