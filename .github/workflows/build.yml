@@ -1,0 +1,37 @@
+name: Build and Package
+
+on:
+  push:
+    tags:
+      - 'v*' # This triggers the workflow on tag pushes starting with 'v'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake rpm
+        
+    - name: Configure and build
+      run: |
+        cmake -H. -B_build -DCPACK_GENERATOR="TGZ;DEB;RPM"
+        cmake --build _build --target package
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: packages
+        path: _build/*.tar.gz _build/*.deb _build/*.rpm
+        
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          _build/*.tar.gz
+          _build/*.deb
+          _build/*.rpm
